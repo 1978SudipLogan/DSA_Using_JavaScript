@@ -10,11 +10,11 @@ less than or equal to K.
 Example:
 
 Input:
-arr = [2, 1, 3, 1, 1, 1, 1, 1, 1, 2, 4, 5, 3]
+arr = [2, 1, 3,  2, 4, 5, 3]
 k = 8
 
 Output:
-[1, 1, 1, 1, 1, 1, 2]
+[2,1,3,2]
 
 Explanation:
 The sum of the longest valid subarray is <= 8.
@@ -44,40 +44,40 @@ const k: number = 8;
 type returnType = number[] | string;
 
 function longestSum(arr: number[], k: number): returnType {
+  if (arr.length === 0) {
+    return "Array doesn't exist";
+  }
 
-    if (arr.length === 0) {
-        return "Array doesn't exist";
+  let left = 0;
+  let maxLen = 0;
+  let start = 0;
+  let sum = 0;
+
+  for (let right = 0; right < arr.length; right++) {
+    // Expand the window
+    sum += arr[right];
+
+    // Shrink the window if sum becomes greater than k
+    while (sum > k) {
+      // Current valid window length
+
+      sum -= arr[left];
+      left++;
     }
+    const currentLen = right - left + 1;
 
-    let left = 0;
-    let maxLen = 0;
-    let start = 0;
-    let sum = 0;
-
-    for (let right = 0; right < arr.length; right++) {
-
-        // Expand the window
-        sum += arr[right];
-
-        // Shrink the window if sum becomes greater than k
-        while (sum > k) {
-            sum -= arr[left];
-            left++;
-        }
-
-        // Current valid window length
-        const currentLen = right - left + 1;
-
-        // Update longest window
-        if (currentLen > maxLen) {
-            maxLen = currentLen;
-            start = left;
-        }
+    // Update longest window
+    if (currentLen > maxLen) {
+      maxLen = currentLen;
+      start = left;
     }
+  }
 
-    return arr.slice(start, start + maxLen);
+  return arr.slice(start, start + maxLen);
 }
 
 const result: returnType = longestSum(arr, k);
 
 console.log(result);
+
+export{};
